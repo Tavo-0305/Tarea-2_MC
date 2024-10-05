@@ -3,21 +3,100 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Problema 8.15 - Gustavo Barboza Blanco - C10870</title>
+		<!-- Estilos CSS -->
+		<style>
+			body {
+				text-align: center; /* Alinea todo el contenido al centro horizontalmente */
+				font-family: Arial, sans-serif; /* Establece una fuente general */
+			}
+			
+			p, h1, h2, label {
+				text-align: justify; /* Justifica el texto */
+				margin: 0 auto; /* Mantiene el texto centrado horizontalmente */
+				width: 80%; /* Opcional: ajusta el ancho de los párrafos a un 80% de la pantalla */
+			}
+
+			/* Centra el botón y los campos de entrada */
+			input, button {
+				margin-top: 10px;
+				margin-bottom: 20px;
+			}
+		</style>
 	</head>	
-	<script id="MathJax-script" async
-          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  	</script>
-	<script type="text/javascript">
-		
-	</script>
+	<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 	<body>
+		<!-- Coloca el script aquí -->
+		<script type="text/javascript">
+			function unit_velocity_converter(kmh_velocity){
+				// esta función toma la velocidad en km/h y la convierte en m/s
+				return kmh_velocity * (1000 / 3600); 
+			}
+
+			function minimal_long(velocity, angle){
+				//esta función es la implementación de la ecuación [*] en código de Javascript
+				let gravity_constant = 9.8;
+				return (velocity * velocity) / (2 * gravity_constant * Math.sin(angle * Math.PI / 180)); 
+			}
+
+			function main_routine(){
+				// Captura los valores de entrada del usuario
+				let velocidad_kmh = document.getElementById("velocidad").value;
+				let angulo_grados = document.getElementById("angulo").value;
+
+				// Verifica que se hayan capturado correctamente
+				console.log("Velocidad (km/h): ", velocidad_kmh);
+				console.log("Ángulo (grados): ", angulo_grados);
+
+				// Convierte la velocidad a m/s
+				let velocidad_ms = unit_velocity_converter(velocidad_kmh);
+
+				// Calcula la longitud mínima
+				let longitud_minima = minimal_long(velocidad_ms, angulo_grados);
+
+				// Muestra el resultado en el HTML
+				document.getElementById("resultado").innerHTML = "La longitud mínima es: " + longitud_minima.toFixed(2) + " metros";
+			}
+		</script>
+		<p>Gustavo Barboza Blanco - C10870</p>
 		<h1>Enunciado</h1>
 		<p>
-			Un camión sin frenos se mueve hacia abajo con una velocidad de \(130 km\) justo antes de toparse con una rampa de pendiente positiva sin fricción, su ángulo de inclinación es de \(\theta = 15 °\). La masa del camión es de \(1.2\cdot10^{4} kg\). 
-			a) ¿Cuál es la distancia \(L\) mínima qie dene tener la rampa para que el camión se detenga momentaneamente justo a los \(L\) metros?
-			b) ¿Qué sucede con la distancia \(L\) si se disminuye la masa del camión?
-			c) ¿Qué sucede con la distancia \(L\) si se disminute la velocidad?
+			Un camión sin frenos se mueve hacia abajo con una velocidad de \(130 km/h\) justo antes de toparse con una rampa de pendiente positiva sin fricción, su ángulo de inclinación es de \(\theta = 15 °\). La masa del camión es de \(1.2\cdot10^{4} kg\). 
+			a) ¿Cuál es la distancia \(L\) mínima que debe tener la rampa para que el camión se detenga momentáneamente justo a los \(L\) metros? b) ¿Qué sucede con la distancia \(L\) si se disminuye la masa del camión? c) ¿Qué sucede con la distancia \(L\) si se disminute la velocidad?
 		</p>
 		<img src="img/problem.png" alt="Figura del problema 8.15">
+		<h2>a) Cálculo de la distancia mínima</h2>
+		<p>Por conservación de la energía tenemos: \(\Delta T + \Delta U = 0\) lo cuál implica:</p>
+		<p>
+			\(\frac{1}{2}m(v^2-u^2)+mg(H-h)=0\) 
+		</p>
+		<p>
+			Donde \(v\) corresponde a la velocidad final, \(u\) velocidad inicial, \(H\) altura final y \(h\) altura inicial. Note que tanto \(v\) como \(h\) se anulan, pues la velocidad final es 0 y tomamos el origen del marco de referencia justo donde el camión empieza a subir la pendiente positiva, además \(H = Lsin(\theta)\). De esta forma se tiene que:
+		</p>
+		<p>
+			\(L=\frac{u^2}{2gsin(\theta)}\) [*] ; Para iniciar el cálculo de dicha longitud es necesario que presione el botón "iniciar", vea que primero debe otorgar la velocidad inicial \(u\) en km/h y el ángulo de la rampa en grados, el programa realizará la conversión a m/s, y posteriormente realizará el cálculo de la longitud correspondiente.
+		</p>
+		<p>
+			Inicialmente se espera que el usuario otorgue los  datos propuestos por el enunciado del problema, sin embargo es una buena oportunidad para experimentar con distintas variaciones de velocidades e inclinaciones. 
+		</p>
 
+		<!-- Inputs del usuario -->
+		<label for="velocidad">Velocidad inicial (km/h):</label>
+		<input type="number" id="velocidad" name="velocidad" value="0"><br><br>
+
+		<label for="angulo">Ángulo de la rampa (°):</label>
+		<input type="number" id="angulo" name="angulo" value="0"><br><br>
+
+		<!-- Botón para ejecutar la función -->
+  		<button onclick="main_routine()">Iniciar</button>
+
+ 		<!-- Área para mostrar el resultado -->
+ 		<p>Respuesta:</p>
+  		<p id="resultado"></p>
+  	
+
+  		<h2>b) Independencia de la masa </h2>
+  		<p>Note que la ecuación [*] es totalmente independiente de la masa, por lo que no importa el valor de dicha variable.</p>
+  		<h2>c) Dependencia de la velocidad </h2>
+  		<p>Observando la ecuación [*] es sencillo ver que si se reduce la velocidad entonces la longitud tiene a decrecer, esta es la oportunidad ideal para que el usuario pueda "jugar" con distintos valores de velocidad, (manteniendo el ángulo constante), y ver cómo cambia la longitud.</p>
 	</body>
+</html>
